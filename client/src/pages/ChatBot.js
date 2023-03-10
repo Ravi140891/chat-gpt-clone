@@ -11,26 +11,26 @@ import {
   Button,
   Alert,
   Collapse,
+  Card,
 } from "@mui/material";
 
-const Login = () => {
+const ChatBot = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   //media
   const isNotMobile = useMediaQuery("(min-width: 1000px)");
   // states
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [text, settext] = useState("");
+  const [response, setResponse] = useState("");
   const [error, setError] = useState("");
 
   //register ctrl
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/v1/auth/login", { email, password });
-      toast.success("Login Successfully");
-      localStorage.setItem("authToken", true);
-      navigate("/");
+      const { data } = await axios.post("/api/v1/openai/chatbot", { text });
+      console.log(data);
+      setResponse(data);
     } catch (err) {
       console.log(error);
       if (err.response.data.error) {
@@ -58,30 +58,21 @@ const Login = () => {
         </Alert>
       </Collapse>
       <form onSubmit={handleSubmit}>
-        <Typography variant="h3">Sign In</Typography>
+        <Typography variant="h3">Ask with Chatbot</Typography>
 
         <TextField
-          label="email"
-          type="email"
+          placeholder="add your text"
+          type="text"
+          multiline={true}
           required
           margin="normal"
           fullWidth
-          value={email}
+          value={text}
           onChange={(e) => {
-            setEmail(e.target.value);
+            settext(e.target.value);
           }}
         />
-        <TextField
-          label="password"
-          type="password"
-          required
-          margin="normal"
-          fullWidth
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
+
         <Button
           type="submit"
           fullWidth
@@ -89,14 +80,54 @@ const Login = () => {
           size="large"
           sx={{ color: "white", mt: 2 }}
         >
-          Sign In
+          Chat
         </Button>
         <Typography mt={2}>
-          Dont have an account ? <Link to="/register">Please Register</Link>
+          not this tool ? <Link to="/">GO BACK</Link>
         </Typography>
       </form>
+
+      {response ? (
+        <Card
+          sx={{
+            mt: 4,
+            border: 1,
+            boxShadow: 0,
+            height: "500px",
+            borderRadius: 5,
+            borderColor: "natural.medium",
+            bgcolor: "background.default",
+          }}
+        >
+          <Typography p={2}>{response}</Typography>
+        </Card>
+      ) : (
+        <Card
+          sx={{
+            mt: 4,
+            border: 1,
+            boxShadow: 0,
+            height: "500px",
+            borderRadius: 5,
+            borderColor: "natural.medium",
+            bgcolor: "background.default",
+          }}
+        >
+          <Typography
+            variant="h5"
+            color="natural.main"
+            sx={{
+              textAlign: "center",
+              verticalAlign: "middel",
+              lineHeight: "450px",
+            }}
+          >
+            Bot Response
+          </Typography>
+        </Card>
+      )}
     </Box>
   );
 };
 
-export default Login;
+export default ChatBot;

@@ -6,3 +6,12 @@
 body {
   font-family: "roboto", sans-serif;
 }
+a {
+  color: #60bf70 !important;
+  text-decoration: none !important;
+  padding: 20px !important;
+  margin-top: 20px !important;
+}
+a:hover {
+  color: black !important;
+}

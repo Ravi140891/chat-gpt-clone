@@ -1,24 +1,22 @@
-const errorResponse = require("../utils/errorResponse");
+const errorResponse = require("../utils/errroResponse");
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  //mongoose cast error
+  //mongoose cast Error
   if (err.name === "castError") {
-    const message = "Resources not found";
+    const message = "Resources Not Found";
     error = new errorResponse(message, 404);
   }
-
-  // Duplicate key error
+  //duplicate key error
   if (err.code === 11000) {
-    const message = "Duplicate field value entered";
+    const message = "Duplicate field value enterd";
     error = new errorResponse(message, 400);
   }
-
-  // Mongoose validation error
+  //mongoose validation
   if (err.name === "ValidationError") {
-    const message = Object.values(err.errors).map((val) => val.message);
+    const messgae = Object.values(err.errors).map((val) => val.message);
     error = new errorResponse(message, 400);
     res.status(error.statusCode || 500).json({
       success: false,
