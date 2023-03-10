@@ -5,6 +5,7 @@ const {
   chatbotController,
   jsconverterController,
   scifiImageController,
+  grammarController,
 } = require("../controllers/openiaController");
 
 const router = express.Router();

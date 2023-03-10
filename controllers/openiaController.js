@@ -53,9 +53,9 @@ exports.chatbotController = async (req, res) => {
     const { text } = req.body;
     const { data } = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `Answer question similar to how yoda from star war would.
+      prompt: `Answer question asked by user.
       Me: 'what is your name?'
-      yoda: 'yoda is my name'
+      my bot: 'I am your personal bot'
       Me: ${text}`,
       max_tokens: 300,
       temperature: 0.7,
